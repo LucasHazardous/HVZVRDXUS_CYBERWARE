@@ -24,23 +24,21 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-class User (val id: Int, val name: String, val surname: String)
-
 @Composable
 fun AppMain() {
-    var appState by rememberSaveable{mutableStateOf('o')}
+    var appState by rememberSaveable { mutableStateOf('o') }
 
     HVZVRDXUS_CYBERWARETheme {
-        if(appState == 'o') {
+        if (appState == 'o') {
             OptionsScreen(listOf({ appState = 'p' }, { appState = 'u' }))
-        } else if(appState == 'u') {
+        } else if (appState == 'u') {
             UsersScreen(listOf(User(0, "Lucvs", "Hvzv3dxus"), User(1, "Jxhn", "Sm1th")))
         }
     }
 }
 
 @Composable
-fun OptionButton(onContinueClicked : () -> Unit) {
+fun OptionButton(onContinueClicked: () -> Unit) {
     Button(
         modifier = Modifier.padding(vertical = 8.dp),
         onClick = onContinueClicked
@@ -58,35 +56,7 @@ fun OptionsScreen(buttonActions: List<() -> Unit>) {
     ) {
         LazyColumn {
             items(items = buttonActions) { buttonAction ->
-                OptionButton (buttonAction)
-            }
-        }
-    }
-}
-
-@Composable
-fun UsersScreen(users: List<User>) {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.padding(vertical = 4.dp)) {
-            LazyColumn {
-                items(items = users) { user ->
-                    UserElement(user)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun UserElement(user: User) {
-    Surface(color = MaterialTheme.colors.primary, modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
-        Row(modifier = Modifier.padding(24.dp).fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
-            Text(user.id.toString())
-            Text(user.name)
-            Text(user.surname)
-
-            OutlinedButton(onClick = {}) {
-                Text("Remove")
+                OptionButton(buttonAction)
             }
         }
     }
