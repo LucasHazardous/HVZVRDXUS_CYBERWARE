@@ -20,12 +20,13 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppMain() {
     var appState by rememberSaveable { mutableStateOf('o') }
+    val goBackToOptions = { appState = 'o' }
 
     HVZVRDXUS_CYBERWARETheme {
         if (appState == 'o') {
             OptionsScreen(listOf(Option("Products") { appState = 'p' }, Option("Users") { appState = 'u' }))
         } else if (appState == 'u') {
-            UsersScreen(listOf(User(0, "Lucvs", "Hvzv3dxus"), User(1, "Jxhn", "Sm1th")))
+            UsersScreen(listOf(User(0, "Lucvs", "Hvzv3dxus"), User(1, "Jxhn", "Sm1th")), goBackToOptions)
         }
     }
 }

@@ -18,10 +18,17 @@ import androidx.compose.ui.unit.dp
 class User(val id: Int, val name: String, val surname: String)
 
 @Composable
-fun UsersScreen(users: List<User>) {
+fun UsersScreen(users: List<User>, goBackToOptions: () -> Unit) {
     Surface(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.padding(vertical = 4.dp)) {
+        Column(modifier = Modifier.padding(vertical = 24.dp)) {
             LazyColumn {
+                item {
+                    Surface(modifier = Modifier.padding(8.dp)) {
+                        OutlinedButton(onClick = goBackToOptions) {
+                            Text("Back")
+                        }
+                    }
+                }
                 items(items = users) { user ->
                     UserElement(user)
                 }
@@ -42,9 +49,11 @@ fun UserElement(user: User) {
                 .fillMaxSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(user.id.toString())
-            Text(user.name)
-            Text(user.surname)
+            Column(modifier = Modifier.padding(8.dp)) {
+                Text("Id: " + user.id)
+                Text("Name: " + user.name)
+                Text("Surname: " + user.surname)
+            }
 
             OutlinedButton(onClick = {}) {
                 Text("Remove")
