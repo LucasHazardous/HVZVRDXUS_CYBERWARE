@@ -6,11 +6,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.OutlinedButton
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,8 +25,11 @@ fun UsersScreen(users: List<User>, goBackToOptions: () -> Unit) {
             LazyColumn {
                 item {
                     Surface(modifier = Modifier.padding(8.dp)) {
-                        OutlinedButton(onClick = goBackToOptions) {
-                            Text("Back")
+                        Row {
+                            OutlinedButton(onClick = goBackToOptions) {
+                                Text("Back")
+                            }
+                            CreateUserSection()
                         }
                     }
                 }
@@ -33,6 +37,23 @@ fun UsersScreen(users: List<User>, goBackToOptions: () -> Unit) {
                     UserElement(user)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun CreateUserSection() {
+    var menuOpen by rememberSaveable { mutableStateOf(false) }
+
+    OutlinedButton(onClick = { menuOpen = !menuOpen }) {
+        Text("Create")
+    }
+    if (menuOpen) {
+        Column(modifier = Modifier.padding(8.dp)) {
+            TextField(value = "name", onValueChange = {})
+            TextField(value = "surname", onValueChange = {})
+            TextField(value = "email", onValueChange = {})
+            TextField(value = "password", onValueChange = {})
         }
     }
 }
