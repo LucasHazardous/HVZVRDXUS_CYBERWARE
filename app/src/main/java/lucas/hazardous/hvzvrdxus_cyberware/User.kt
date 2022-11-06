@@ -7,19 +7,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.getValue
 
-class User(val id: Int, val name: String, val surname: String)
+data class User(val id: Int, val name: String, val surname: String)
+
+var userList: List<User> = emptyList()
 
 @Composable
-fun UsersScreen(users: List<User>, goBackToOptions: () -> Unit) {
+fun UsersScreen(goBackToOptions: () -> Unit) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.padding(vertical = 24.dp)) {
             LazyColumn {
@@ -33,7 +33,7 @@ fun UsersScreen(users: List<User>, goBackToOptions: () -> Unit) {
                         }
                     }
                 }
-                items(items = users) { user ->
+                items(items = userList) { user ->
                     UserElement(user)
                 }
             }
