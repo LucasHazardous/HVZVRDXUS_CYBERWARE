@@ -16,7 +16,9 @@ import androidx.compose.runtime.getValue
 
 data class User(val id: Int, val name: String, val surname: String)
 
-var userList: List<User> = emptyList()
+data class UserToAdd(val name: String, val surname: String, val email: String, val password: String)
+
+var userList = mutableStateOf<List<User>>(emptyList())
 
 @Composable
 fun UsersScreen(goBackToOptions: () -> Unit) {
@@ -33,7 +35,7 @@ fun UsersScreen(goBackToOptions: () -> Unit) {
                         }
                     }
                 }
-                items(items = userList) { user ->
+                items(items = userList.value) { user ->
                     UserElement(user)
                 }
             }
@@ -44,17 +46,23 @@ fun UsersScreen(goBackToOptions: () -> Unit) {
 @Composable
 fun CreateUserSection() {
     var menuOpen by rememberSaveable { mutableStateOf(false) }
+    var name by remember { mutableStateOf("") }
+    var surname by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
 
     OutlinedButton(onClick = { menuOpen = !menuOpen }) {
         Text("Create")
     }
     if (menuOpen) {
         Column(modifier = Modifier.padding(8.dp)) {
-            TextField(value = "name", onValueChange = {})
-            TextField(value = "surname", onValueChange = {})
-            TextField(value = "email", onValueChange = {})
-            TextField(value = "password", onValueChange = {})
+            TextField(value = name, onValueChange = {v -> name = v}, label = { Text("Name") })
+            TextField(value = surname, onValueChange = {v -> surname = v}, label = { Text("Surname") })
+            TextField(value = email, onValueChange = {v -> email = v}, label = { Text("Email") })
+            TextField(value = password, onValueChange = {v -> password = v}, label = { Text("Password") })
         }
+    } else if(!menuOpen && name != "" && surname != "" && email != "" && password != "") {
+        ApiRequests.addUser(UserToAdd(name, surname, email, password))
     }
 }
 

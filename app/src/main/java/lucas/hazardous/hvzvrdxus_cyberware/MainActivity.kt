@@ -11,7 +11,6 @@ import lucas.hazardous.hvzvrdxus_cyberware.ui.theme.HVZVRDXUS_CYBERWARETheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ApiRequests.getData()
         setContent {
             AppMain()
         }
@@ -27,6 +26,7 @@ fun AppMain() {
         if (appState == 'o') {
             OptionsScreen(listOf(Option("Products") { appState = 'p' }, Option("Users") { appState = 'u' }))
         } else if (appState == 'u') {
+            ApiRequests.getData()
             UsersScreen(goBackToOptions)
         }
     }

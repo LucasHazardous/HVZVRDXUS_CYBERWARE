@@ -8,7 +8,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 
 interface ServerApi {
     companion object {
@@ -17,6 +19,9 @@ interface ServerApi {
 
     @GET("users")
     fun getUsers(): Call<List<User>>
+
+    @POST("users")
+    fun addUser(@Body user: UserToAdd): Call<Int>
 }
 
 class ApiRequests {
@@ -44,12 +49,26 @@ class ApiRequests {
                 ) {
                     if (response.isSuccessful) {
                         Log.d("ApiRequests", "onResponse: ${response.body()}")
-                        userList = response.body()!!
+                        userList.value = response.body()!!
                     }
                 }
 
                 override fun onFailure(call: Call<List<User>>, t: Throwable) {
                     Log.d("ApiRequests", "onFailure: ${t.message}")
+                }
+            })
+        }
+
+        fun addUser(user: UserToAdd) {
+            api.addUser(user).enqueue(object : Callback<Int> {
+                override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                    if (response.isSuccessful) {
+                        Log.d("ApiRequests", "onResponse: ${response.body()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<Int>, t: Throwable) {
+                    Log.e("ApiRequests", "onFailure: ${t.message}")
                 }
             })
         }
