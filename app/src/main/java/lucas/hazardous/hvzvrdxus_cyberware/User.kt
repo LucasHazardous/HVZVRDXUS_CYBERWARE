@@ -68,6 +68,7 @@ fun CreateUserSection() {
 
 @Composable
 fun UserElement(user: User) {
+    var btnEnabled by remember { mutableStateOf(true) }
     Surface(
         color = MaterialTheme.colors.primary,
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
@@ -84,7 +85,7 @@ fun UserElement(user: User) {
                 Text("Surname: " + user.surname)
             }
 
-            OutlinedButton(onClick = {}) {
+            OutlinedButton(onClick = { ApiRequests.deleteUser(user.id); btnEnabled = false }, enabled = btnEnabled) {
                 Text("Remove")
             }
         }

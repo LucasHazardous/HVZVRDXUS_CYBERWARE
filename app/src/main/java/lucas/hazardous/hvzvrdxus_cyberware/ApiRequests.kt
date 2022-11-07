@@ -8,9 +8,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ServerApi {
     companion object {
@@ -22,6 +20,9 @@ interface ServerApi {
 
     @POST("users")
     fun addUser(@Body user: UserToAdd): Call<Int>
+
+    @DELETE("users/{id}")
+    fun deleteUser(@Path("id") id: Int): Call<Int>
 }
 
 class ApiRequests {
@@ -61,6 +62,20 @@ class ApiRequests {
 
         fun addUser(user: UserToAdd) {
             api.addUser(user).enqueue(object : Callback<Int> {
+                override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                    if (response.isSuccessful) {
+                        Log.d("ApiRequests", "onResponse: ${response.body()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<Int>, t: Throwable) {
+                    Log.e("ApiRequests", "onFailure: ${t.message}")
+                }
+            })
+        }
+
+        fun deleteUser(id: Int) {
+            api.deleteUser(id).enqueue(object : Callback<Int> {
                 override fun onResponse(call: Call<Int>, response: Response<Int>) {
                     if (response.isSuccessful) {
                         Log.d("ApiRequests", "onResponse: ${response.body()}")
