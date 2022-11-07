@@ -1,5 +1,6 @@
 package lucas.hazardous.hvzvrdxus_cyberware
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 
 data class User(val id: Int, val name: String, val surname: String)
 
@@ -22,22 +24,18 @@ var userList = mutableStateOf<List<User>>(emptyList())
 
 @Composable
 fun UsersScreen(goBackToOptions: () -> Unit) {
-    Surface(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.padding(vertical = 24.dp)) {
-            LazyColumn {
-                item {
-                    Surface(modifier = Modifier.padding(8.dp)) {
-                        Row {
-                            OutlinedButton(onClick = goBackToOptions) {
-                                Text("Back")
-                            }
-                            CreateUserSection()
-                        }
+    Column(modifier = Modifier.padding(vertical = 24.dp)) {
+        LazyColumn {
+            item {
+                Row {
+                    OutlinedButton(onClick = goBackToOptions, colors = ButtonDefaults.buttonColors(Color.Cyan), modifier = Modifier.padding(8.dp)) {
+                        Text("Back")
                     }
+                    CreateUserSection()
                 }
-                items(items = userList.value) { user ->
-                    UserElement(user)
-                }
+            }
+            items(items = userList.value) { user ->
+                UserElement(user)
             }
         }
     }
@@ -51,7 +49,11 @@ fun CreateUserSection() {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    OutlinedButton(onClick = { menuOpen = !menuOpen }) {
+    OutlinedButton(
+        onClick = { menuOpen = !menuOpen },
+        colors = ButtonDefaults.buttonColors(Color.Cyan),
+        modifier = Modifier.padding(8.dp)
+    ) {
         Text("Create")
     }
     if (menuOpen) {
@@ -70,8 +72,9 @@ fun CreateUserSection() {
 fun UserElement(user: User) {
     var btnEnabled by remember { mutableStateOf(true) }
     Surface(
-        color = MaterialTheme.colors.primary,
-        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+        color = Color.Yellow,
+        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+        border = BorderStroke(2.dp, Color.Cyan)
     ) {
         Row(
             modifier = Modifier
@@ -85,7 +88,11 @@ fun UserElement(user: User) {
                 Text("Surname: " + user.surname)
             }
 
-            OutlinedButton(onClick = { ApiRequests.deleteUser(user.id); btnEnabled = false }, enabled = btnEnabled) {
+            OutlinedButton(
+                onClick = { ApiRequests.deleteUser(user.id); btnEnabled = false },
+                enabled = btnEnabled,
+                colors = ButtonDefaults.buttonColors(Color.Red)
+            ) {
                 Text("Remove")
             }
         }
