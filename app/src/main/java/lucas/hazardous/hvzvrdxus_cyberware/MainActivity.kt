@@ -28,12 +28,16 @@ fun AppMain() {
     val goBackToOptions = { appState = 'o' }
 
     HVZVRDXUS_CYBERWARETheme {
-        Box(modifier = Modifier.fillMaxSize().background(Color.Yellow)) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Yellow)) {
             if (appState == 'o') {
                 OptionsScreen(listOf(Option("Products") { appState = 'p' }, Option("Users") { appState = 'u' }))
             } else if (appState == 'u') {
                 ApiRequests.getData()
                 UsersScreen(goBackToOptions)
+            } else if(appState == 'p') {
+                ProductsScreen(goBackToOptions)
             }
         }
     }
