@@ -40,6 +40,7 @@ fun AppMain() {
                     UsersScreen(goBackToOptions)
                 }
                 'p' -> {
+                    ApiRequests.loadProductList()
                     ProductsScreen(goBackToOptions)
                 }
             }
