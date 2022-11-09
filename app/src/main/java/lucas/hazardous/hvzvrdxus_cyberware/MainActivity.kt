@@ -31,13 +31,17 @@ fun AppMain() {
         Box(modifier = Modifier
             .fillMaxSize()
             .background(Color.Yellow)) {
-            if (appState == 'o') {
-                OptionsScreen(listOf(Option("Products") { appState = 'p' }, Option("Users") { appState = 'u' }))
-            } else if (appState == 'u') {
-                ApiRequests.getData()
-                UsersScreen(goBackToOptions)
-            } else if(appState == 'p') {
-                ProductsScreen(goBackToOptions)
+            when (appState) {
+                'o' -> {
+                    OptionsScreen(listOf(Option("Products") { appState = 'p' }, Option("Users") { appState = 'u' }))
+                }
+                'u' -> {
+                    ApiRequests.loadUserList()
+                    UsersScreen(goBackToOptions)
+                }
+                'p' -> {
+                    ProductsScreen(goBackToOptions)
+                }
             }
         }
     }

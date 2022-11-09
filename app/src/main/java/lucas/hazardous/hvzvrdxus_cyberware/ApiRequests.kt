@@ -42,7 +42,7 @@ class ApiRequests {
 
         private val api: ServerApi = retrofit.create(ServerApi::class.java)
 
-        fun getData() {
+        fun loadUserList() {
             api.getUsers().enqueue(object: Callback<List<User>> {
                 override fun onResponse(
                     call: Call<List<User>>,
