@@ -5,14 +5,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
 data class Product(val id: Int, val name: String, val price: Float, val description: String, val category: Int)
 
@@ -46,8 +53,19 @@ fun ProductElement(product: Product) {
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
         border = BorderStroke(2.dp, if(product.category % 2 == 1) Color.Red else Color.Cyan)
     ) {
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(8.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally) {
             Text(product.name + " [${product.id}]")
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("https://images.pexels.com/photos/1852389/pexels-photo-1852389.jpeg?auto=compress&cs=tinysrgb")
+                    .crossfade(true)
+                    .build(),
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.clip(CircleShape),
+                contentDescription = null
+            )
             Text(product.price.toString())
             Text(product.description)
         }
