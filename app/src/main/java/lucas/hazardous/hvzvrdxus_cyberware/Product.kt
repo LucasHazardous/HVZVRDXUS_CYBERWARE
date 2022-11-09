@@ -21,11 +21,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 
-data class Product(val id: Int, val name: String, val price: Float, val description: String, val category: Int)
+data class Product(val id: Int, val name: String, val price: Float, val description: String, val category: Int, val image: String)
 
-var productList = mutableStateOf(listOf(Product(1, "Sample", 2.20f, "This is a sample description.", 1),
-    Product(2, "Samplee", 11.1f, "This is a cool description.", 2),
-    Product(3, "Sampleee", 3.34f, "This is a description.", 3)))
+var productList = mutableStateOf<List<Product>>(emptyList())
 
 @Composable
 fun ProductsScreen(goBackToOptions: () -> Unit) {
@@ -59,7 +57,7 @@ fun ProductElement(product: Product) {
             Text(product.name + " [${product.id}]")
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://images.pexels.com/photos/1852389/pexels-photo-1852389.jpeg?auto=compress&cs=tinysrgb")
+                    .data(product.image)
                     .crossfade(true)
                     .build(),
                 contentScale = ContentScale.Crop,
