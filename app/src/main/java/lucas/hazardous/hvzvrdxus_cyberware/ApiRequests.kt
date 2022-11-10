@@ -29,6 +29,9 @@ interface ServerApi {
 
     @DELETE("products/{id}")
     fun deleteProduct(@Path("id") id: Int): Call<Int>
+
+    @POST("products")
+    fun addProduct(@Body product: ProductToAdd): Call<Int>
 }
 
 class ApiRequests {
@@ -114,6 +117,20 @@ class ApiRequests {
 
         fun deleteProduct(id: Int) {
             api.deleteProduct(id).enqueue(object : Callback<Int> {
+                override fun onResponse(call: Call<Int>, response: Response<Int>) {
+                    if (response.isSuccessful) {
+                        Log.d("ApiRequests", "onResponse: ${response.body()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<Int>, t: Throwable) {
+                    Log.e("ApiRequests", "onFailure: ${t.message}")
+                }
+            })
+        }
+
+        fun addProduct(product: ProductToAdd) {
+            api.addProduct(product).enqueue(object : Callback<Int> {
                 override fun onResponse(call: Call<Int>, response: Response<Int>) {
                     if (response.isSuccessful) {
                         Log.d("ApiRequests", "onResponse: ${response.body()}")
