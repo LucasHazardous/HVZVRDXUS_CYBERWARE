@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 
-data class User(val id: Int, val name: String, val surname: String)
+data class User(val id: Int, val name: String, val surname: String, val role: Int)
 
 data class UserToAdd(val name: String, val surname: String, val email: String, val password: String)
 
@@ -67,7 +67,13 @@ fun CreateUserSection() {
 
 @Composable
 fun UserElement(user: User) {
-    var btnEnabled by remember { mutableStateOf(true) }
+    var removeBtnEnabled by remember { mutableStateOf(true) }
+    var editing by remember { mutableStateOf(false) }
+
+    var name by remember { mutableStateOf(user.name) }
+    var surname by remember { mutableStateOf(user.surname) }
+    var role by remember { mutableStateOf(user.role) }
+
     Surface(
         color = Color.Yellow,
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
@@ -81,13 +87,32 @@ fun UserElement(user: User) {
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
                 Text("Id: " + user.id)
-                Text("Name: " + user.name)
-                Text("Surname: " + user.surname)
+                if(!editing) {
+                    Text("Name: " + user.name)
+                    Text("Surname: " + user.surname)
+                    Text("Role: " + user.role)
+                } else {
+                    TextField(value = name, onValueChange = {v -> name = v}, label = { Text("Name") })
+                    TextField(value = surname, onValueChange = {v -> surname = v}, label = { Text("Surname") })
+                    TextField(value = role.toString(), onValueChange = {v -> role =  try { v.toInt() } catch (nfe: NumberFormatException) { 0 }}, label = { Text("Role") })
+                }
             }
             Spacer(Modifier.weight(1f))
             OutlinedButton(
-                onClick = { ApiRequests.deleteUser(user.id); btnEnabled = false },
-                enabled = btnEnabled,
+                onClick = {
+                    if(editing) {
+                        val newUser = User(user.id, name, surname, role)
+                        ApiRequests.patchUser(user.id, newUser)
+                    }
+                    editing = !editing
+                },
+                colors = ButtonDefaults.buttonColors(Color.Cyan)
+            ) {
+                Text("Edit")
+            }
+            OutlinedButton(
+                onClick = { ApiRequests.deleteUser(user.id); removeBtnEnabled = false },
+                enabled = removeBtnEnabled,
                 colors = ButtonDefaults.buttonColors(Color.Red)
             ) {
                 Text("Remove")
