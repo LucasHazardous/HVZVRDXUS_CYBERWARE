@@ -21,6 +21,9 @@ interface ServerApi {
     @POST("users")
     fun addUser(@Body user: UserToAdd): Call<Int>
 
+    @PATCH("users/{id}")
+    fun patchUser(@Path("id") id: Int, @Body user: User): Call<User>
+
     @DELETE("users/{id}")
     fun deleteUser(@Path("id") id: Int): Call<Int>
 
@@ -64,7 +67,7 @@ class ApiRequests {
                 }
 
                 override fun onFailure(call: Call<List<User>>, t: Throwable) {
-                    Log.d("ApiRequests", "onFailure: ${t.message}")
+                    Log.e("ApiRequests", "onFailure: ${t.message}")
                 }
             })
         }
@@ -78,6 +81,20 @@ class ApiRequests {
                 }
 
                 override fun onFailure(call: Call<Int>, t: Throwable) {
+                    Log.e("ApiRequests", "onFailure: ${t.message}")
+                }
+            })
+        }
+
+        fun patchUser(id: Int, user: User) {
+            api.patchUser(id, user).enqueue(object : Callback<User> {
+                override fun onResponse(call: Call<User>, response: Response<User>) {
+                    if (response.isSuccessful) {
+                        Log.d("ApiRequests", "onResponse: ${response.body()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<User>, t: Throwable) {
                     Log.e("ApiRequests", "onFailure: ${t.message}")
                 }
             })
@@ -110,7 +127,7 @@ class ApiRequests {
                 }
 
                 override fun onFailure(call: Call<List<Product>>, t: Throwable) {
-                    Log.d("ApiRequests", "onFailure: ${t.message}")
+                    Log.e("ApiRequests", "onFailure: ${t.message}")
                 }
             })
         }
