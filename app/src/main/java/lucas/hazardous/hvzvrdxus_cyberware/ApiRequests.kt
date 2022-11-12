@@ -35,6 +35,9 @@ interface ServerApi {
 
     @POST("products")
     fun addProduct(@Body product: ProductToAdd): Call<Int>
+
+    @PATCH("products/{id}")
+    fun patchProduct(@Path("id") id: Int, @Body product: Product): Call<Product>
 }
 
 class ApiRequests {
@@ -155,6 +158,20 @@ class ApiRequests {
                 }
 
                 override fun onFailure(call: Call<Int>, t: Throwable) {
+                    Log.e("ApiRequests", "onFailure: ${t.message}")
+                }
+            })
+        }
+
+        fun patchProduct(id: Int, product: Product) {
+            api.patchProduct(id, product).enqueue(object : Callback<Product> {
+                override fun onResponse(call: Call<Product>, response: Response<Product>) {
+                    if (response.isSuccessful) {
+                        Log.d("ApiRequests", "onResponse: ${response.body()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<Product>, t: Throwable) {
                     Log.e("ApiRequests", "onFailure: ${t.message}")
                 }
             })
