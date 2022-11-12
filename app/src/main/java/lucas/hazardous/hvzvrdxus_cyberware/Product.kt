@@ -63,7 +63,7 @@ fun CreateProductSection() {
                 value = price.toString(),
                 onValueChange = { v ->
                     price = try {
-                        v.toFloat().round(2)
+                        v.toFloat().roundTwo()
                     } catch (nfe: NumberFormatException) { 0f }
                 },
                 label = { Text("Price") },
@@ -87,15 +87,19 @@ fun CreateProductSection() {
     }
 }
 
-fun Float.round(decimals: Int): Float {
-    var multiplier = 1
-    repeat(decimals) { multiplier *= 10 }
-    return round(this * multiplier) / multiplier
+fun Float.roundTwo(): Float {
+    return round(this * 100) / 100
 }
 
 @Composable
 fun ProductElement(product: Product) {
     var btnEnabled by remember { mutableStateOf(true) }
+    var editing by remember { mutableStateOf(false) }
+
+    var name by remember { mutableStateOf(product.name) }
+    var price by remember { mutableStateOf(product.price) }
+    var description by remember { mutableStateOf(product.description) }
+
     Surface(
         color = Color.Yellow,
         modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
@@ -109,11 +113,29 @@ fun ProductElement(product: Product) {
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
                 Text("Id: " + product.id)
-                Text("Name: " + product.name)
-                Text("Price: " + product.price.toString())
-                Text("Description: " + product.description)
+                if(!editing) {
+                    Text("Name: " + product.name)
+                    Text("Price: " + product.price.toString())
+                    Text("Description: " + product.description)
+                } else {
+                    TextField(value = name, onValueChange = {v -> name = v}, label = { Text("Name") })
+                    TextField(value = price.toString(), onValueChange = {v -> price =  try { v.toFloat().roundTwo() } catch (nfe: NumberFormatException) { 1f }}, label = { Text("Price") })
+                    TextField(value = description, onValueChange = {v -> description = v}, label = { Text("Description") })
+                }
             }
             Spacer(Modifier.weight(1f))
+            OutlinedButton(
+                onClick = {
+                    if(editing) {
+                        val newProduct = Product(product.id, name, price, description, product.category, product.image)
+                        ApiRequests.patchProduct(product.id, newProduct)
+                    }
+                    editing = !editing
+                },
+                colors = ButtonDefaults.buttonColors(Color.Cyan)
+            ) {
+                Text("Edit")
+            }
             OutlinedButton(
                 onClick = { ApiRequests.deleteProduct(product.id); btnEnabled = false },
                 enabled = btnEnabled,
