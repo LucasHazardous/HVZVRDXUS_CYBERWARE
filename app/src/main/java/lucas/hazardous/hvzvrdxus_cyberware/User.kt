@@ -60,7 +60,7 @@ fun CreateUserSection() {
             TextField(value = email, onValueChange = {v -> email = v}, label = { Text("Email") })
             TextField(value = password, onValueChange = {v -> password = v}, label = { Text("Password") })
         }
-    } else if(!menuOpen && name != "" && surname != "" && email != "" && password != "") {
+    } else if(!menuOpen && name.trim() != "" && surname.trim() != "" && email.trim() != "" && password.trim() != "") {
         ApiRequests.addUser(UserToAdd(name, surname, email, password))
     }
 }

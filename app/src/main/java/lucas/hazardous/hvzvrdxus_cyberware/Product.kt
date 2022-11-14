@@ -82,7 +82,7 @@ fun CreateProductSection() {
             )
             TextField(value = image, onValueChange = { v -> image = v }, label = { Text("Image") })
         }
-    } else if(!menuOpen && name != "" && price > 0f && description != "") {
+    } else if(!menuOpen && name.trim() != "" && price > 0f && description.trim() != "") {
         ApiRequests.addProduct(ProductToAdd(name, price, description, category, image))
     }
 }
