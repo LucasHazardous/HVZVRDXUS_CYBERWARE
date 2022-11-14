@@ -129,7 +129,7 @@ fun ProductElement(product: Product) {
             Spacer(Modifier.weight(1f))
             OutlinedButton(
                 onClick = {
-                    if(editing) {
+                    if(editing && name.trim() != "" && price > 0f && description.trim() != "") {
                         val newProduct = Product(product.id, name, price, description, category, product.image)
                         ApiRequests.patchProduct(product.id, newProduct)
                     }

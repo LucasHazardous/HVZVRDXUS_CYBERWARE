@@ -100,7 +100,7 @@ fun UserElement(user: User) {
             Spacer(Modifier.weight(1f))
             OutlinedButton(
                 onClick = {
-                    if(editing) {
+                    if(editing && name.trim() != "" && surname.trim() != "") {
                         val newUser = User(user.id, name, surname, role)
                         ApiRequests.patchUser(user.id, newUser)
                     }
