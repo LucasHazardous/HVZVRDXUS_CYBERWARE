@@ -99,6 +99,7 @@ fun ProductElement(product: Product) {
     var name by remember { mutableStateOf(product.name) }
     var price by remember { mutableStateOf(product.price) }
     var description by remember { mutableStateOf(product.description) }
+    var category by remember { mutableStateOf(product.category) }
 
     Surface(
         color = Color.Yellow,
@@ -117,17 +118,19 @@ fun ProductElement(product: Product) {
                     Text("Name: " + product.name)
                     Text("Price: " + product.price.toString())
                     Text("Description: " + product.description)
+                    Text("Category: " + product.category)
                 } else {
                     TextField(value = name, onValueChange = {v -> name = v}, label = { Text("Name") })
                     TextField(value = price.toString(), onValueChange = {v -> price =  try { v.toFloat().roundTwo() } catch (nfe: NumberFormatException) { 1f }}, label = { Text("Price") })
                     TextField(value = description, onValueChange = {v -> description = v}, label = { Text("Description") })
+                    TextField(value = category.toString(), onValueChange = {v -> category =  try { v.toInt() } catch (nfe: NumberFormatException) { 0 }}, label = { Text("Category") })
                 }
             }
             Spacer(Modifier.weight(1f))
             OutlinedButton(
                 onClick = {
                     if(editing) {
-                        val newProduct = Product(product.id, name, price, description, product.category, product.image)
+                        val newProduct = Product(product.id, name, price, description, category, product.image)
                         ApiRequests.patchProduct(product.id, newProduct)
                     }
                     editing = !editing
