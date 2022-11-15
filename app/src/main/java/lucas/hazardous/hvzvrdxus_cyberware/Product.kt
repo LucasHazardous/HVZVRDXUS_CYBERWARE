@@ -113,17 +113,17 @@ fun ProductElement(product: Product) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
-                Text("Id: " + product.id)
+                Text("Id: " + product.id, modifier = maxTextLengthModifier)
                 if(!editing) {
-                    Text("Name: " + product.name)
-                    Text("Price: " + product.price.toString())
-                    Text("Description: " + product.description)
-                    Text("Category: " + product.category)
+                    Text("Name: " + product.name, modifier = maxTextLengthModifier)
+                    Text("Price: " + product.price.toString(), modifier = maxTextLengthModifier)
+                    Text("Description: " + product.description, modifier = maxTextLengthModifier)
+                    Text("Category: " + product.category, modifier = maxTextLengthModifier)
                 } else {
-                    TextField(value = name, onValueChange = {v -> name = v}, label = { Text("Name") })
-                    TextField(value = price.toString(), onValueChange = {v -> price =  try { v.toFloat().roundTwo() } catch (nfe: NumberFormatException) { 1f }}, label = { Text("Price") })
-                    TextField(value = description, onValueChange = {v -> description = v}, label = { Text("Description") })
-                    TextField(value = category.toString(), onValueChange = {v -> category =  try { v.toInt() } catch (nfe: NumberFormatException) { 0 }}, label = { Text("Category") })
+                    TextField(value = name, onValueChange = {v -> name = v}, label = { Text("Name") }, modifier = maxTextLengthModifier)
+                    TextField(value = price.toString(), onValueChange = {v -> price =  try { v.toFloat().roundTwo() } catch (nfe: NumberFormatException) { 1f }}, label = { Text("Price") }, modifier = maxTextLengthModifier)
+                    TextField(value = description, onValueChange = {v -> description = v}, label = { Text("Description") }, modifier = maxTextLengthModifier)
+                    TextField(value = category.toString(), onValueChange = {v -> category =  try { v.toInt() } catch (nfe: NumberFormatException) { 0 }}, label = { Text("Category") }, modifier = maxTextLengthModifier)
                 }
             }
             Spacer(Modifier.weight(1f))

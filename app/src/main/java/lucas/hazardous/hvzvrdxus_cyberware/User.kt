@@ -86,15 +86,15 @@ fun UserElement(user: User) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
-                Text("Id: " + user.id)
+                Text("Id: " + user.id, modifier = maxTextLengthModifier)
                 if(!editing) {
-                    Text("Name: " + user.name)
-                    Text("Surname: " + user.surname)
-                    Text("Role: " + user.role)
+                    Text("Name: " + user.name, modifier = maxTextLengthModifier)
+                    Text("Surname: " + user.surname, modifier = maxTextLengthModifier)
+                    Text("Role: " + user.role, modifier = maxTextLengthModifier)
                 } else {
-                    TextField(value = name, onValueChange = {v -> name = v}, label = { Text("Name") })
-                    TextField(value = surname, onValueChange = {v -> surname = v}, label = { Text("Surname") })
-                    TextField(value = role.toString(), onValueChange = {v -> role =  try { v.toInt() } catch (nfe: NumberFormatException) { 0 }}, label = { Text("Role") })
+                    TextField(value = name, onValueChange = {v -> name = v}, label = { Text("Name") }, modifier = maxTextLengthModifier)
+                    TextField(value = surname, onValueChange = {v -> surname = v}, label = { Text("Surname") }, modifier = maxTextLengthModifier)
+                    TextField(value = role.toString(), onValueChange = {v -> role =  try { v.toInt() } catch (nfe: NumberFormatException) { 0 }}, label = { Text("Role") }, modifier = maxTextLengthModifier)
                 }
             }
             Spacer(Modifier.weight(1f))
