@@ -22,7 +22,7 @@ interface ServerApi {
     fun addUser(@Body user: UserToAdd): Call<Int>
 
     @PATCH("users/{id}")
-    fun patchUser(@Path("id") id: Int, @Body user: User): Call<User>
+    fun patchUser(@Path("id") id: Int, @Body user: User): Call<Int>
 
     @DELETE("users/{id}")
     fun deleteUser(@Path("id") id: Int): Call<Int>
@@ -90,14 +90,14 @@ class ApiRequests {
         }
 
         fun patchUser(id: Int, user: User) {
-            api.patchUser(id, user).enqueue(object : Callback<User> {
-                override fun onResponse(call: Call<User>, response: Response<User>) {
+            api.patchUser(id, user).enqueue(object : Callback<Int> {
+                override fun onResponse(call: Call<Int>, response: Response<Int>) {
                     if (response.isSuccessful) {
                         Log.d("ApiRequests", "onResponse: ${response.body()}")
                     }
                 }
 
-                override fun onFailure(call: Call<User>, t: Throwable) {
+                override fun onFailure(call: Call<Int>, t: Throwable) {
                     Log.e("ApiRequests", "onFailure: ${t.message}")
                 }
             })
