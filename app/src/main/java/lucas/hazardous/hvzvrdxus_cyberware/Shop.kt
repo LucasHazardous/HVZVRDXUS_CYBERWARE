@@ -65,6 +65,12 @@ fun ShopProductElement(product: Product) {
             )
             Text(product.price.toString())
             Text(product.description)
+            OutlinedButton(
+                onClick = { productsInCart = productsInCart + product },
+                colors = ButtonDefaults.buttonColors(Color.Red)
+            ) {
+                Text("Cart")
+            }
         }
     }
 }
