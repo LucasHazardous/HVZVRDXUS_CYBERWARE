@@ -43,6 +43,7 @@ fun AppMain() {
                             Option("Users") { appState = 'u' },
                             Option("Shop") { appState = 's' },
                             Option("Cart") { appState = 'c' },
+                            Option("Orders") { appState = 'r' },
                             Option("About") { appState = 'a' }),
                     )
                 }
@@ -60,6 +61,10 @@ fun AppMain() {
                 }
                 'c' -> {
                     CartScreen(goBackToOptions)
+                }
+                'r' -> {
+                    ApiRequests.loadOrderList()
+                    OrdersScreen(goBackToOptions)
                 }
                 'a' -> {
                     AboutScreen(goBackToOptions)
