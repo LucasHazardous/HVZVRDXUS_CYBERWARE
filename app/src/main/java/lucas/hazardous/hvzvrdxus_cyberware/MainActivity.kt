@@ -37,7 +37,14 @@ fun AppMain() {
             .background(Color.Yellow)) {
             when (appState) {
                 'o' -> {
-                    OptionsScreen(listOf(Option("Products") { appState = 'p' }, Option("Users") { appState = 'u' }, Option("Shop") { appState = 's' }, Option("Order") { appState = 'r' }, Option("About") { appState = 'a' }))
+                    OptionsScreen(
+                        listOf(
+                            Option("Products") { appState = 'p' },
+                            Option("Users") { appState = 'u' },
+                            Option("Shop") { appState = 's' },
+                            Option("Cart") { appState = 'c' },
+                            Option("About") { appState = 'a' }),
+                    )
                 }
                 'u' -> {
                     ApiRequests.loadUserList()
@@ -51,8 +58,8 @@ fun AppMain() {
                     ApiRequests.loadProductList()
                     ShopScreen(goBackToOptions)
                 }
-                'r' -> {
-                    OrderScreen(goBackToOptions)
+                'c' -> {
+                    CartScreen(goBackToOptions)
                 }
                 'a' -> {
                     AboutScreen(goBackToOptions)

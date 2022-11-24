@@ -20,12 +20,12 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import kotlin.reflect.KProperty1
 
-data class Order(val user_id: Int, val product_ids: List<Int>, val address: String)
+data class CartOrder(val user_id: Int, val product_ids: List<Int>, val address: String)
 
 var productsInCart: List<Product> = emptyList()
 
 @Composable
-fun OrderScreen(goBackToOptions: () -> Unit) {
+fun CartScreen(goBackToOptions: () -> Unit) {
     var userId by remember { mutableStateOf(0) }
     var address by remember { mutableStateOf("") }
 
@@ -61,7 +61,7 @@ fun OrderScreen(goBackToOptions: () -> Unit) {
             }
             item {
                 OutlinedButton(onClick = {
-                    ApiRequests.addOrder(Order(userId, productsInCart.listOfField(Product::id), address))
+                    ApiRequests.addCartOrder(CartOrder(userId, productsInCart.listOfField(Product::id), address))
                 }, colors = ButtonDefaults.buttonColors(
                     Color.Red), modifier = Modifier.padding(8.dp)) {
                     Text("Order")
