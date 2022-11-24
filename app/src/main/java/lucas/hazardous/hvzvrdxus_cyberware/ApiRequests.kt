@@ -8,40 +8,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.*
-
-interface ServerApi {
-    companion object {
-        const val BASE_URL = "http://192.168.1.251:8080/api/"
-    }
-
-    @GET("users")
-    fun getUsers(): Call<List<User>>
-
-    @POST("users")
-    fun addUser(@Body user: UserToAdd): Call<Int>
-
-    @PATCH("users/{id}")
-    fun patchUser(@Path("id") id: Int, @Body user: User): Call<Int>
-
-    @DELETE("users/{id}")
-    fun deleteUser(@Path("id") id: Int): Call<Int>
-
-    @GET("products")
-    fun getProducts(): Call<List<Product>>
-
-    @DELETE("products/{id}")
-    fun deleteProduct(@Path("id") id: Int): Call<Int>
-
-    @POST("products")
-    fun addProduct(@Body product: ProductToAdd): Call<Int>
-
-    @PATCH("products/{id}")
-    fun patchProduct(@Path("id") id: Int, @Body product: Product): Call<Int>
-
-    @POST("orders")
-    fun addOrder(@Body order: Order): Call<Int>
-}
 
 class ApiRequests {
     companion object {
@@ -180,8 +146,8 @@ class ApiRequests {
             })
         }
 
-        fun addOrder(order: Order) {
-            api.addOrder(order).enqueue(object : Callback<Int> {
+        fun addCartOrder(cartOrder: CartOrder) {
+            api.addCartOrder(cartOrder).enqueue(object : Callback<Int> {
                 override fun onResponse(call: Call<Int>, response: Response<Int>) {
                     if (response.isSuccessful) {
                         Log.d("ApiRequests", "onResponse: ${response.body()}")
@@ -189,6 +155,24 @@ class ApiRequests {
                 }
 
                 override fun onFailure(call: Call<Int>, t: Throwable) {
+                    Log.e("ApiRequests", "onFailure: ${t.message}")
+                }
+            })
+        }
+
+        fun loadOrderList() {
+            api.getOrders().enqueue(object: Callback<List<Order>> {
+                override fun onResponse(
+                    call: Call<List<Order>>,
+                    response: Response<List<Order>>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d("ApiRequests", "onResponse: ${response.body()}")
+                        orderList.value = response.body()!!
+                    }
+                }
+
+                override fun onFailure(call: Call<List<Order>>, t: Throwable) {
                     Log.e("ApiRequests", "onFailure: ${t.message}")
                 }
             })
