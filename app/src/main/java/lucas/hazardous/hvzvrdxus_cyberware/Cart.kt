@@ -1,6 +1,5 @@
 package lucas.hazardous.hvzvrdxus_cyberware
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -8,7 +7,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -18,6 +16,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import lucas.hazardous.hvzvrdxus_cyberware.api.ApiRequests
+import lucas.hazardous.hvzvrdxus_cyberware.ui.components.ListElementSurface
 import kotlin.reflect.KProperty1
 
 data class CartOrder(val user_id: Int, val product_ids: List<Int>, val address: String)
@@ -71,7 +71,7 @@ fun CartScreen(goBackToOptions: () -> Unit) {
     }
 }
 
-inline fun <reified T, Y> List<T>.listOfField(property: KProperty1<T, Y>):List<Y> {
+private inline fun <reified T, Y> List<T>.listOfField(property: KProperty1<T, Y>):List<Y> {
     val yy = ArrayList<Y>()
     this.forEach { t: T ->
         yy += property.get(t)
@@ -81,14 +81,8 @@ inline fun <reified T, Y> List<T>.listOfField(property: KProperty1<T, Y>):List<Y
 
 @Composable
 fun CartElement(product: Product) {
-    Surface(
-        color = Color.Yellow,
-        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-        border = BorderStroke(2.dp, Color.Cyan)
-    ) {
-        Column(modifier = Modifier.padding(8.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally) {
+    ListElementSurface {
+        Column {
             Text(product.name)
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
