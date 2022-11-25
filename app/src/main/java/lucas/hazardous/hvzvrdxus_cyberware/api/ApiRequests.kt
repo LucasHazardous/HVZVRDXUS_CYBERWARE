@@ -1,6 +1,7 @@
-package lucas.hazardous.hvzvrdxus_cyberware
+package lucas.hazardous.hvzvrdxus_cyberware.api
 
 import android.util.Log
+import lucas.hazardous.hvzvrdxus_cyberware.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call

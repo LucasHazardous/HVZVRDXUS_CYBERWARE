@@ -1,5 +1,6 @@
-package lucas.hazardous.hvzvrdxus_cyberware
+package lucas.hazardous.hvzvrdxus_cyberware.api
 
+import lucas.hazardous.hvzvrdxus_cyberware.*
 import retrofit2.Call
 import retrofit2.http.*
 
